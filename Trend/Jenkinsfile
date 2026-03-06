@@ -5,7 +5,7 @@ pipeline {
 
  stage('Clone') {
  steps {
- git 'https://github.com/yourusername/trend-devops-project.git'
+ git 'https://github.com/psakthiece/Trendstore/tree/main/Trend'
  }
  }
 
