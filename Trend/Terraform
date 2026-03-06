@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_key_pair" "jenkins_key" {
   key_name   = "jenkins-key"
-  public_key = file("jenkins-key.pub")
+  public_key = file("${path.module}/jenkins-key.pub")
 }
 
 resource "aws_instance" "jenkins" {
