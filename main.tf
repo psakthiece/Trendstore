@@ -10,7 +10,7 @@ resource "aws_key_pair" "my_key" {
 
 # Launch EC2 instance
 resource "aws_instance" "my_ec2" {
-  ami           = "ami-0c3389a4fa5bddaad" # Amazon Linux 2 AMI (check region-specific AMI)
+  ami           = "ami-0ec10929233384c7f" # Amazon Linux 2 AMI (check region-specific AMI)
   instance_type = "t3.small"
   key_name      = aws_key_pair.my_key.key_name
 
