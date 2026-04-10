@@ -7,10 +7,17 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/psakthiece/Trendstore.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} ."
+                    // Point to Dockerfile inside Trend folder
+                    sh "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} -f Trend/Dockerfile Trend"
                 }
             }
         }
