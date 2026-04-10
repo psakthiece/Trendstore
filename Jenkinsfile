@@ -16,8 +16,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Point to Dockerfile inside Trend folder
-                    sh "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} -f Trend/Dockerfile Trend"
+                    // Use Dockerfile at repo root
+                    sh "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} -f Dockerfile ."
                 }
             }
         }
@@ -25,8 +25,6 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 script {
-                    // Ensure you have created DockerHub credentials in Jenkins
-                    // Replace 'dockerhub-credentials' with your actual Jenkins credentials ID
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                     }
@@ -45,7 +43,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Make sure kubectl is configured with the right context
                     sh "kubectl apply -f deployment.yaml"
                     sh "kubectl apply -f service.yaml"
                 }
