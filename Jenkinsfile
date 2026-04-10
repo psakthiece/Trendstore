@@ -18,8 +18,8 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 script {
-                    // Make sure you configure DockerHub credentials in Jenkins
-                    // and replace 'dockerhub-credentials' with your credentials ID
+                    // Ensure you have created DockerHub credentials in Jenkins
+                    // Replace 'dockerhub-credentials' with your actual Jenkins credentials ID
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                     }
@@ -38,10 +38,23 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    // Make sure kubectl is configured with the right context
                     sh "kubectl apply -f deployment.yaml"
                     sh "kubectl apply -f service.yaml"
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline execution completed."
+        }
+        success {
+            echo "Application successfully built, pushed, and deployed!"
+        }
+        failure {
+            echo "Pipeline failed. Please check the logs."
         }
     }
 }
